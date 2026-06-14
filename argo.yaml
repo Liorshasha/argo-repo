@@ -1,32 +1,36 @@
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: my-project
-  namespace: argocd
-spec:
-  description: Project allowing apps from a specific Git repo
-  sourceRepos:
-    - https://github.com/liorshasha/*
-  destinations:
-    - namespace: '*'
-      server: https://kubernetes.default.svc
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+# Source: lior-app/templates/service.yaml
+kind: Service     
+apiVersion: v1     
 metadata:
-  name: lior-app
-  namespace: argocd
+  name: my-app-service #from RELEASE NAME
 spec:
-  project: my-project
-  source:
-    repoURL: https://github.com/Liorshasha/argo-repo.git
-    path: .
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  selector:
+    app: my-app
+  type: ClusterIP
+  ports:         
+  - name: http   
+    protocol: TCP
+    port: 8000 #from Values
+    targetPort: 8000  #from values
+---
+# Source: lior-app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lior-app #from RELEASE NAME
+spec:
+  selector: 
+    matchLabels:
+      app: my-app
+  replicas: 1   #from values
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app #from values
+        image: liorshasha/myapp-my_project:latest #from values
+        ports:
+        - containerPort: 8000
