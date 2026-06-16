@@ -13,3 +13,5 @@
  Connect via web preview in cloudshell
  User name : admin
  password : The one you copied from section 9
+
+ Dont forget to run on cloudshell - kubectl apply -f argo-repo/argo.yaml so it will sync with argo-cd
