@@ -23,7 +23,7 @@ spec:
   selector: 
     matchLabels:
       app: my-app
-  replicas: 2   #from values
+  replicas: 1   #from values
   template:
     metadata:
       labels:
