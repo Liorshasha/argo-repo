@@ -9,6 +9,7 @@
  kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d && echo ----> (copy the password)
  kubectl -n argocd port-forward svc/argocd-server 8080:80 -----------------------
  --------------------------------------
- After install open browser the login to : https://localhost:8080
+ After install open browser the login to : https://localhost:8081
+ Connect via web preview in cloudshell
  User name : admin
  password : The one you copied from section 9
